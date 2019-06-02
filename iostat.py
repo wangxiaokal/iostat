@@ -72,30 +72,30 @@ unit_info={
 }
 
 def display(iostats, dsp_mode, unit):
-	fmt=dsp_fmt[dsp_mode]
-	ui=unit_info[unit]
-	
-	headers[it_rsec]='r'+ui[0]+'/s'
-	headers[it_wsec]='w'+ui[0]+'/s'
-	
-	hdr_fmt=''
-	hdr=[]
-	itm_fmt=''
-	
-	for i in fmt:
-		hdr_fmt+=headers_fmt[i]+' '
-		hdr.append(headers[i])
-		itm_fmt+=items_fmt[i]+' '
-	
-	print hdr_fmt % tuple(hdr)
-	
-	for iostat in iostats:
-		itm=[]
-		for i in fmt:
-			itm.append(iostat[i] if i != it_rsec and i != it_wsec else iostat[i]/ui[1])
-		print itm_fmt % tuple(itm)
-	
-	print ''
+    fmt=dsp_fmt[dsp_mode]
+    ui=unit_info[unit]
+    
+    headers[it_rsec]='r'+ui[0]+'/s'
+    headers[it_wsec]='w'+ui[0]+'/s'
+    
+    hdr_fmt=''
+    hdr=[]
+    itm_fmt=''
+    
+    for i in fmt:
+        hdr_fmt+=headers_fmt[i]+' '
+        hdr.append(headers[i])
+        itm_fmt+=items_fmt[i]+' '
+    
+    print hdr_fmt % tuple(hdr)
+    
+    for iostat in iostats:
+        itm=[]
+        for i in fmt:
+            itm.append(iostat[i] if i != it_rsec and i != it_wsec else iostat[i]/ui[1])
+        print itm_fmt % tuple(itm)
+    
+    print ''
 
 def calc_items(new_stats, old_stats, itv):
     ret=[]
@@ -112,28 +112,28 @@ def calc_items(new_stats, old_stats, itv):
         nr_rd_secs=new[i_rd_sectors]-old[i_rd_sectors]
         nr_wr_secs=new[i_wr_sectors]-old[i_wr_sectors]
         nr_secs=nr_rd_secs+nr_wr_secs
-		
-		nr_rd_ticks=new[i_rd_ticks]-old[i_rd_ticks]
-		nr_wr_ticks=new[i_wr_ticks]-old[i_wr_ticks]
-		nr_ticks=nr_rd_ticks+nr_wr_ticks
+        
+        nr_rd_ticks=new[i_rd_ticks]-old[i_rd_ticks]
+        nr_wr_ticks=new[i_wr_ticks]-old[i_wr_ticks]
+        nr_ticks=nr_rd_ticks+nr_wr_ticks
         
         iostat=[]
-        iostat.append(new[i_dev_name])											#dev_name
-        iostat.append((new[i_rd_merges]-old[i_rd_merges])/itv)      			#rrqm/s
-        iostat.append((new[i_wr_merges]-old[i_wr_merges])/itv)      			#wrqm/s
-        iostat.append(nr_rd_ios/itv)                                			#r/s
-        iostat.append(nr_wr_ios/itv)                                			#w/s
-        iostat.append(nr_rd_secs/itv)                               			#rsec/s
-        iostat.append(nr_wr_secs/itv)                               			#wsec/s
-		iostat.append(nr_rd_secs/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)	#ravgrq-sz
-		iostat.append(nr_wr_secs/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)	#wavgrq-sz
-		iostat.append(nr_secs/float(nr_ios) if nr_ios != 0 else 0.0)			#avgrq-sz
-		iostat.append((new[i_time_in_queue]-old[i_time_in_queue])/(itv*1000.0))	#avgqu-sz
-		iostat.append(nr_rd_ticks/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)	#r_await
-		iostat.append(nr_wr_ticks/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)	#w_await
-		iostat.append(nr_ticks/float(nr_ios) if nr_ios != 0 else 0.0)			#await
-		iostat.append((new[i_io_ticks]-old[i_io_ticks])/(itv*10.0))				#%util
-		
+        iostat.append(new[i_dev_name])                                            #dev_name
+        iostat.append((new[i_rd_merges]-old[i_rd_merges])/itv)                  #rrqm/s
+        iostat.append((new[i_wr_merges]-old[i_wr_merges])/itv)                  #wrqm/s
+        iostat.append(nr_rd_ios/itv)                                            #r/s
+        iostat.append(nr_wr_ios/itv)                                            #w/s
+        iostat.append(nr_rd_secs/itv)                                           #rsec/s
+        iostat.append(nr_wr_secs/itv)                                           #wsec/s
+        iostat.append(nr_rd_secs/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)    #ravgrq-sz
+        iostat.append(nr_wr_secs/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)    #wavgrq-sz
+        iostat.append(nr_secs/float(nr_ios) if nr_ios != 0 else 0.0)            #avgrq-sz
+        iostat.append((new[i_time_in_queue]-old[i_time_in_queue])/(itv*1000.0))    #avgqu-sz
+        iostat.append(nr_rd_ticks/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)    #r_await
+        iostat.append(nr_wr_ticks/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)    #w_await
+        iostat.append(nr_ticks/float(nr_ios) if nr_ios != 0 else 0.0)            #await
+        iostat.append((new[i_io_ticks]-old[i_io_ticks])/(itv*10.0))                #%util
+        
         ret.append(iostat)
     return ret
 
@@ -146,8 +146,8 @@ def io_stat(params):
 
     new_stats=read_diskstats(params['dev'])
     iostats=calc_items(new_stats, old_stats, float(params['itv']))
-	display(iostats, params['dsp_mode'], params['unit'])
-	old_stats=new_stats
+    display(iostats, params['dsp_mode'], params['unit'])
+    old_stats=new_stats
 
 def parse_param(params):
     if len(sys.argv) == 2 and (sys.argv[1] == '-h' or sys.argv[1] == '--help'):
