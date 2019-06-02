@@ -118,21 +118,21 @@ def calc_items(new_stats, old_stats, itv):
         nr_ticks=nr_rd_ticks+nr_wr_ticks
         
         iostat=[]
-        iostat.append(new[i_dev_name])                                            #dev_name
+        iostat.append(new[i_dev_name])                                          #dev_name
         iostat.append((new[i_rd_merges]-old[i_rd_merges])/itv)                  #rrqm/s
         iostat.append((new[i_wr_merges]-old[i_wr_merges])/itv)                  #wrqm/s
         iostat.append(nr_rd_ios/itv)                                            #r/s
         iostat.append(nr_wr_ios/itv)                                            #w/s
         iostat.append(nr_rd_secs/itv)                                           #rsec/s
         iostat.append(nr_wr_secs/itv)                                           #wsec/s
-        iostat.append(nr_rd_secs/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)    #ravgrq-sz
-        iostat.append(nr_wr_secs/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)    #wavgrq-sz
+        iostat.append(nr_rd_secs/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)   #ravgrq-sz
+        iostat.append(nr_wr_secs/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)   #wavgrq-sz
         iostat.append(nr_secs/float(nr_ios) if nr_ios != 0 else 0.0)            #avgrq-sz
-        iostat.append((new[i_time_in_queue]-old[i_time_in_queue])/(itv*1000.0))    #avgqu-sz
-        iostat.append(nr_rd_ticks/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)    #r_await
-        iostat.append(nr_wr_ticks/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)    #w_await
-        iostat.append(nr_ticks/float(nr_ios) if nr_ios != 0 else 0.0)            #await
-        iostat.append((new[i_io_ticks]-old[i_io_ticks])/(itv*10.0))                #%util
+        iostat.append((new[i_time_in_queue]-old[i_time_in_queue])/(itv*1000.0)) #avgqu-sz
+        iostat.append(nr_rd_ticks/float(nr_rd_ios) if nr_rd_ios != 0 else 0.0)  #r_await
+        iostat.append(nr_wr_ticks/float(nr_wr_ios) if nr_wr_ios != 0 else 0.0)  #w_await
+        iostat.append(nr_ticks/float(nr_ios) if nr_ios != 0 else 0.0)           #await
+        iostat.append((new[i_io_ticks]-old[i_io_ticks])/(itv*10.0))             #%util
         
         ret.append(iostat)
     return ret
